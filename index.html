@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>記事検索(Qiita)</title>
+    <link rel="stylesheet" href="app.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+    <header class="app-bar">
+        <h1>記事検索(Qiita)</h1>
+    </header>
+
+    <main class="container">
+        <!-- 記事検索フォーム -->
+        <section class="card">
+            <h2>記事を検索</h2>
+            <form id="articleSearchForm" class="article-search-form">
+                <div class="field">
+                    <label for="articleSearchQuery">キーワード</label>
+                    <span class="required" aria-hidden="true">必須</span>
+                    <input type="text" id="articleSearchQuery" name="articleSearchQuery" placeholder="例）React 状態管理"
+                        autocomplete="off" required>
+                </div>
+                <button type="submit" id="searchButton">検索</button>
+            </form>
+        </section>
+
+        <!-- 検索結果 -->
+        <section class="card">
+            <div class="list-header">
+                <h2>検索結果</h2>
+                <p id="summary" class="summary" aria-live="polite"></p>
+            </div>
+
+            <!-- 検索中・エラーの状態表示 -->
+            <p id="status" class="status" role="status" aria-live="polite" hidden></p>
+
+            <!-- 記事一覧 -->
+            <ul id="articleList" class="article-list">
+                <!--
+                  1件の構造（JSで生成する見本。実際の生成は app.js で行う）:
+                  <li class="article-item" data-id="記事ID">
+                      <img class="article-avatar" src="user.profile_image_url" alt="著者名" width="40" height="40">
+                      <div class="article-main">
+                          <p class="article-title">記事タイトル</p>
+                          <p class="article-author">by 著者名</p>
+                          <p class="article-tags">#React #状態管理 #TypeScript</p>
+                      </div>
+                      <div class="article-meta">
+                          <span class="article-likes"><img src="heart.svg" alt="いいね" width="14" height="14"> 342</span>
+                          <span class="article-date">2026-06-02</span>
+                      </div>
+                  </li>
+                -->
+            </ul>
+
+            <!-- 状態メッセージ。初期は案内を表示。検索中/0件/エラーは app.js が文言と表示を切り替える -->
+            <p id="emptyState" class="empty-state">
+                キーワードを入力して記事を検索してください。
+            </p>
+        </section>
+    </main>
+
+    <!--
+      詳細モーダル。カードを選ぶと GET /items/{id} を叩き、rendered_body を本文に表示する。
+      初期は hidden。開閉は app.js（閉じる / オーバーレイクリック / Esc）。
+    -->
+    <div id="modalOverlay" class="modal-overlay" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+            <div class="modal-header">
+                <img id="modalAvatar" class="modal-avatar" src="" alt="" width="48" height="48">
+                <div>
+                    <h3 id="modalTitle" class="modal-title"></h3>
+                    <p id="modalMeta" class="modal-meta"></p>
+                </div>
+            </div>
+
+            <p id="modalTags" class="modal-tags"></p>
+
+            <p id="modalStats" class="modal-stats">
+                <img src="heart.svg" alt="いいね" width="14" height="14">
+                いいね <span id="modalLikes"></span> ｜ ストック <span id="modalStocks"></span> ｜ コメント <span
+                    id="modalComments"></span>
+            </p>
+
+            <div id="modalBody" class="modal-body"></div>
+
+            <p id="modalDates" class="modal-dates"></p>
+
+            <div class="modal-footer">
+                <a id="modalLink" class="modal-link" href="#" target="_blank" rel="noopener noreferrer">Qiitaで開く</a>
+                <button type="button" id="modalClose" class="modal-close">閉じる</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
