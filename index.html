@@ -40,23 +40,24 @@
             <p id="status" class="status" role="status" aria-live="polite" hidden></p>
 
             <!-- 記事一覧 -->
-            <ul id="articleList" class="article-list">
-                <!--
-                  1件の構造（JSで生成する見本。実際の生成は app.js で行う）:
-                  <li class="article-item" data-id="記事ID">
-                      <img class="article-avatar" src="user.profile_image_url" alt="著者名" width="40" height="40">
-                      <div class="article-main">
-                          <p class="article-title">記事タイトル</p>
-                          <p class="article-author">by 著者名</p>
-                          <p class="article-tags">#React #状態管理 #TypeScript</p>
-                      </div>
-                      <div class="article-meta">
-                          <span class="article-likes"><img src="heart.svg" alt="いいね" width="14" height="14"> 342</span>
-                          <span class="article-date">2026-06-02</span>
-                      </div>
-                  </li>
-                -->
-            </ul>
+            <ul id="articleList" class="article-list"></ul>
+
+            <!-- 記事1件のテンプレート。app.js がクローンして各スロットに textContent で流し込む -->
+            <template id="articleItemTemplate">
+                <li class="article-item">
+                    <img class="article-avatar" src="" alt="" width="40" height="40">
+                    <div class="article-main">
+                        <p class="article-title"></p>
+                        <p class="article-author"></p>
+                        <p class="article-tags"></p>
+                    </div>
+                    <div class="article-meta">
+                        <span class="article-likes"><img src="heart.svg" alt="いいね" width="14" height="14">
+                            <span class="likes-count"></span></span>
+                        <span class="article-date"></span>
+                    </div>
+                </li>
+            </template>
 
             <!-- 状態メッセージ。初期は案内を表示。検索中/0件/エラーは app.js が文言と表示を切り替える -->
             <p id="emptyState" class="empty-state">

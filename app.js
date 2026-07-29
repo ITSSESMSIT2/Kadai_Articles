@@ -8,6 +8,7 @@ const articleList = document.querySelector('#articleList');
 const statusEl = document.querySelector('#status');
 const emptyState = document.querySelector('#emptyState');
 const summary = document.querySelector('#summary');
+const articleItemTemplate = document.querySelector('#articleItemTemplate');
 
 // 受け取った Date を YYYY-MM-DD 形式の文字列に整形する
 const formatDate = (date) => {
@@ -87,32 +88,33 @@ articleSearchForm.addEventListener('submit', async (e) => {
     }
 });
 
+
 // 記事リストを作成する
 const createArticleList = (articles) => {
     articleList.innerHTML = '';
     articles.forEach(article => {
+        // テンプレートから要素を複製してデータを流し込む
+        const item = articleItemTemplate.content.firstElementChild.cloneNode(true);
+
+        // ユーザー入力は innerHTML に直接埋め込まず、textContent で入れて XSS を防ぐ
         const author = article.user.name || article.user.id;
         const tags = article.tags.slice(0, 4).map(tag => `#${tag.name}`).join(' ');
-        const articleItem = document.createElement('li');
-        articleItem.classList.add('article-item');
-        articleItem.setAttribute('data-id', article.id);
-        articleItem.innerHTML = `
-            <img class="article-avatar" src="${article.user.profile_image_url}" alt="${author}" width="40" height="40">
-            <div class="article-main">
-                <p class="article-title">${article.title}</p>
-                <p class="article-author">by ${author}</p>
-                <p class="article-tags">${tags}</p>
-            </div>
-            <div class="article-meta">
-                <span class="article-likes"><img src="heart.svg" alt="いいね" width="14" height="14"> ${article.likes_count}</span>
-                <span class="article-date">${formatDate(new Date(article.created_at))}</span>
-            </div>
-        `;
-        articleList.appendChild(articleItem);
+        const avatar = item.querySelector('.article-avatar');
+        avatar.src = article.user.profile_image_url;
+        avatar.alt = author;
+        item.dataset.id = article.id;
+        item.querySelector('.article-title').textContent = article.title;
+        item.querySelector('.article-author').textContent = `by ${author}`;
+        item.querySelector('.article-tags').textContent = tags;
+        item.querySelector('.likes-count').textContent = article.likes_count;
+        item.querySelector('.article-date').textContent = formatDate(new Date(article.created_at));
+
+        articleList.appendChild(item);
     });
 };
 
-//  詳細モーダル =====
+
+//  詳細モーダル
 const modalOverlay = document.querySelector('#modalOverlay');
 const modalAvatar = document.querySelector('#modalAvatar');
 const modalTitle = document.querySelector('#modalTitle');
