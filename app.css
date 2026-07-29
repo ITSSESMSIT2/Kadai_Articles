@@ -94,7 +94,6 @@ body {
     color: var(--text-sub);
 }
 
-/* 必須は文字色（赤）で示す。枠は付けない */
 .required {
     color: var(--danger);
     font-size: 12px;
@@ -116,7 +115,9 @@ body {
     box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
 }
 
+/* 追加ボタン */
 #searchButton {
+    min-width: 128px;
     height: 40px;
     padding: 0 var(--space-lg);
     font-size: 14px;
